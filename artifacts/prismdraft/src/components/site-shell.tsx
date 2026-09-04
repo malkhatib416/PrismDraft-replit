@@ -32,37 +32,33 @@ export function Header({ homeAnchors = false }: ShellProps) {
         className={`pd-nav-links ${menuOpen ? "is-open" : ""}`}
         aria-label="Primary navigation"
       >
-        <a href={homeLink("method")} onClick={closeMenu} data-testid="link-method">
-          Method
-        </a>
+        <div className="pd-nav-primary">
+          <a href={homeLink("method")} onClick={closeMenu} data-testid="link-method">
+            Method
+          </a>
+          <a
+            href={homeLink("workspace")}
+            onClick={closeMenu}
+            data-testid="link-workspace"
+          >
+            Workspace
+          </a>
+          <a
+            href={homeLink("principles")}
+            onClick={closeMenu}
+            data-testid="link-principles"
+          >
+            Principles
+          </a>
+        </div>
+        <div className="pd-nav-reading">
+          <span className="pd-nav-reading-label">Field notes</span>
+          <a href={sitePath("/how-it-works")} onClick={closeMenu}>
+            Read the method <ArrowUpRight size={13} strokeWidth={1.8} />
+          </a>
+        </div>
         <a
-          href={homeLink("workspace")}
-          onClick={closeMenu}
-          data-testid="link-workspace"
-        >
-          Workspace
-        </a>
-        <a
-          href={homeLink("principles")}
-          onClick={closeMenu}
-          data-testid="link-principles"
-        >
-          Principles
-        </a>
-        <a href={sitePath("/how-it-works")} onClick={closeMenu}>
-          How it works
-        </a>
-        <a href={sitePath("/seo-content-workflow")} onClick={closeMenu}>
-          SEO workflow
-        </a>
-        <a href={sitePath("/content-brief-template")} onClick={closeMenu}>
-          Brief template
-        </a>
-        <a href={sitePath("/editorial-review")} onClick={closeMenu}>
-          Editorial review
-        </a>
-        <a
-          className="pd-button pd-button--quiet"
+          className="pd-button pd-button--coral pd-nav-mobile-cta"
           href={homeLink("contact")}
           onClick={closeMenu}
           data-testid="link-nav-contact"
@@ -70,8 +66,12 @@ export function Header({ homeAnchors = false }: ShellProps) {
           Talk to the desk <ArrowUpRight size={14} strokeWidth={1.8} />
         </a>
       </nav>
-      <a className="pd-button" href={homeLink("contact")} data-testid="link-nav-cta">
-        See PrismDraft <ArrowUpRight size={14} strokeWidth={1.8} />
+      <a
+        className="pd-button pd-button--coral pd-nav-desktop-cta"
+        href={homeLink("contact")}
+        data-testid="link-nav-cta"
+      >
+        Talk to the desk <ArrowUpRight size={14} strokeWidth={1.8} />
       </a>
       <button
         className="pd-menu-button"

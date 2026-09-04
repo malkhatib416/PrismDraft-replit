@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --paper: #f4f0e8;
+  --paper-deep: #e8e0d4;
+  --ink: #202938;
+  --ink-soft: #66707b;
+  --rule: #cfc6b9;
+  --coral: #e65c48;
+  --coral-dark: #c84a39;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 7% 6%, rgba(230, 92, 72, .07), transparent 20rem),
+    var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.current-page {
+  min-height: 100vh;
+  padding: 32px 32px 72px;
+}
+
+.current-nav {
+  width: min(1180px, 100%);
+  min-height: 82px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.current-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -.04em;
+}
+
+.current-mark {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  display: inline-block;
+  transform: rotate(45deg);
+  background: var(--coral);
+}
+
+.current-mark::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  background: var(--paper);
+}
+
+.current-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-left: auto;
+  margin-right: 25px;
+}
+
+.current-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.current-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 17px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  color: var(--paper);
+  background: var(--ink);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.current-button--quiet {
+  margin-left: 12px;
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--rule);
+}
+
+.current-note {
+  width: min(1180px, 100%);
+  margin: 68px auto 0;
+  color: var(--ink-soft);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1000px) {
+  .current-links {
+    gap: 14px;
+    margin-right: 14px;
+  }
+
+  .current-links a {
+    font-size: 10px;
+  }
+}
