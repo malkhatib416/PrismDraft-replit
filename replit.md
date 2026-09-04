@@ -1,6 +1,6 @@
-# [Project name]
+# PrismDraft
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+PrismDraft is an editorial landing page for a content workspace that helps teams plan, draft, review, and publish with human judgment intact.
 
 ## Run & Operate
 
@@ -22,15 +22,20 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/prismdraft/src/pages/home.tsx` — home page sections and editorial illustrations
+- `artifacts/prismdraft/src/index.css` — PrismDraft visual system, responsive layout, and motion
+- `artifacts/prismdraft/src/App.tsx` — root route
+- `lib/api-spec/openapi.yaml` — reserved API contract for a future product workspace build
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The current PrismDraft artifact is intentionally presentation-only: CTAs use anchors or email and do not imply working product flows.
+- The visual language uses editorial paper, ink, vermillion, teal, and mustard accents to distinguish the product from generic SaaS dashboards.
+- Product functionality, authentication, billing, generation, and publishing are intentionally deferred until the home experience is approved.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+The current build is a responsive, scrollable PrismDraft home page communicating the product's editorial method, contextual images, approval gate, and visible credits. It does not include product functionality yet.
 
 ## User preferences
 
@@ -38,7 +43,7 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Keep CTAs honest while the product surface is presentation-only; do not add fake sign-in, generation, or checkout behavior to the home page.
 
 ## Pointers
 

@@ -10,6 +10,14 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: workspace
+    description: Workspace overview and activity
+  - name: projects
+    description: Content projects
+  - name: articles
+    description: Article workflow
+  - name: generation
+    description: Cancellable generation runs
 paths:
   /healthz:
     get:
@@ -24,7 +32,274 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /workspace/dashboard:
+    get:
+      operationId: getWorkspaceDashboard
+      tags: [workspace]
+      summary: Get workspace dashboard
+      responses:
+        "200":
+          description: Workspace dashboard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dashboard"
+  /workspace/activity:
+    get:
+      operationId: getWorkspaceActivity
+      tags: [workspace]
+      summary: Get recent workspace activity
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Activity"
+  /workspace/credits:
+    get:
+      operationId: getWorkspaceCredits
+      tags: [workspace]
+      summary: Get credit balance and usage
+      responses:
+        "200":
+          description: Credit balance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditSummary"
+  /projects:
+    get:
+      operationId: listProjects
+      tags: [projects]
+      summary: List projects in the current workspace
+      responses:
+        "200":
+          description: Projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      operationId: createProject
+      tags: [projects]
+      summary: Create a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        "201":
+          description: Created project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+  /projects/{projectId}:
+    get:
+      operationId: getProject
+      tags: [projects]
+      summary: Get a project
+      parameters:
+        - $ref: "#/components/parameters/ProjectId"
+      responses:
+        "200":
+          description: Project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Project not found
+    patch:
+      operationId: updateProject
+      tags: [projects]
+      summary: Update a project
+      parameters:
+        - $ref: "#/components/parameters/ProjectId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectUpdate"
+      responses:
+        "200":
+          description: Updated project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+  /projects/{projectId}/articles:
+    get:
+      operationId: listProjectArticles
+      tags: [articles]
+      summary: List articles in a project
+      parameters:
+        - $ref: "#/components/parameters/ProjectId"
+      responses:
+        "200":
+          description: Articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ArticleSummary"
+    post:
+      operationId: createArticle
+      tags: [articles]
+      summary: Create an article from a brief
+      parameters:
+        - $ref: "#/components/parameters/ProjectId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleInput"
+      responses:
+        "201":
+          description: Created article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+  /articles/{articleId}:
+    get:
+      operationId: getArticle
+      tags: [articles]
+      summary: Get an article
+      parameters:
+        - $ref: "#/components/parameters/ArticleId"
+      responses:
+        "200":
+          description: Article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+    patch:
+      operationId: updateArticle
+      tags: [articles]
+      summary: Update an article
+      parameters:
+        - $ref: "#/components/parameters/ArticleId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleUpdate"
+      responses:
+        "200":
+          description: Updated article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+  /articles/{articleId}/outline:
+    post:
+      operationId: generateArticleOutline
+      tags: [articles]
+      summary: Generate an editable outline
+      parameters:
+        - $ref: "#/components/parameters/ArticleId"
+      responses:
+        "200":
+          description: Generated outline
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Outline"
+  /articles/{articleId}/generate:
+    post:
+      operationId: startArticleGeneration
+      tags: [generation]
+      summary: Start a cancellable article generation run
+      parameters:
+        - $ref: "#/components/parameters/ArticleId"
+      responses:
+        "202":
+          description: Generation run
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerationRun"
+  /generation/{runId}/cancel:
+    post:
+      operationId: cancelGeneration
+      tags: [generation]
+      summary: Cancel a generation run
+      parameters:
+        - $ref: "#/components/parameters/RunId"
+      responses:
+        "200":
+          description: Cancelled generation run
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerationRun"
+  /articles/{articleId}/review:
+    post:
+      operationId: reviewArticle
+      tags: [articles]
+      summary: Request changes or approve an article
+      parameters:
+        - $ref: "#/components/parameters/ArticleId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "200":
+          description: Reviewed article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+  /articles/{articleId}/publish:
+    post:
+      operationId: publishArticle
+      tags: [articles]
+      summary: Publish an approved article to the connected CMS
+      parameters:
+        - $ref: "#/components/parameters/ArticleId"
+      responses:
+        "200":
+          description: Publish result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishResult"
 components:
+  parameters:
+    ProjectId:
+      name: projectId
+      in: path
+      required: true
+      schema:
+        type: string
+    ArticleId:
+      name: articleId
+      in: path
+      required: true
+      schema:
+        type: string
+    RunId:
+      name: runId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
     HealthStatus:
       type: object
@@ -33,4 +308,196 @@ components:
           type: string
       required:
         - status
+    Workspace:
+      type: object
+      required: [id, name, memberCount]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        memberCount: { type: number }
+    Project:
+      type: object
+      required: [id, name, description, brandVoice, articleCount, updatedAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        brandVoice: { type: string }
+        articleCount: { type: number }
+        updatedAt: { type: string }
+    ProjectInput:
+      type: object
+      required: [name, description, brandVoice]
+      properties:
+        name: { type: string, minLength: 1 }
+        description: { type: string }
+        brandVoice: { type: string }
+    ProjectUpdate:
+      type: object
+      properties:
+        name: { type: string, minLength: 1 }
+        description: { type: string }
+        brandVoice: { type: string }
+    ArticleSummary:
+      type: object
+      required: [id, projectId, title, status, brief, updatedAt, wordCount]
+      properties:
+        id: { type: string }
+        projectId: { type: string }
+        title: { type: string }
+        status:
+          type: string
+          enum: [brief, outline, writing, review, changes_requested, approved, published]
+        brief: { type: string }
+        updatedAt: { type: string }
+        wordCount: { type: number }
+    Article:
+      allOf:
+        - $ref: "#/components/schemas/ArticleSummary"
+        - type: object
+          required: [outline, content, version, imageCount, estimatedCredits]
+          properties:
+            outline:
+              type: array
+              items:
+                $ref: "#/components/schemas/OutlineItem"
+            content: { type: string }
+            version: { type: number }
+            imageCount: { type: number }
+            estimatedCredits: { type: number }
+            reviewComment:
+              type: ["string", "null"]
+            approvedBy:
+              type: ["string", "null"]
+            publishedUrl:
+              type: ["string", "null"]
+    ArticleInput:
+      type: object
+      required: [title, brief]
+      properties:
+        title: { type: string, minLength: 1 }
+        brief: { type: string, minLength: 1 }
+    ArticleUpdate:
+      type: object
+      properties:
+        title: { type: string, minLength: 1 }
+        brief: { type: string }
+        outline:
+          type: array
+          items:
+            $ref: "#/components/schemas/OutlineItem"
+    Outline:
+      type: object
+      required: [items, version]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OutlineItem"
+        version: { type: number }
+    OutlineItem:
+      type: object
+      required: [id, heading, angle, status]
+      properties:
+        id: { type: string }
+        heading: { type: string }
+        angle: { type: string }
+        status:
+          type: string
+          enum: [planned, drafted]
+    GenerationRun:
+      type: object
+      required: [id, articleId, status, phase, progress, estimatedCredits, reservedCredits]
+      properties:
+        id: { type: string }
+        articleId: { type: string }
+        status:
+          type: string
+          enum: [queued, running, completed, cancelled, failed]
+        phase: { type: string }
+        progress: { type: number }
+        estimatedCredits: { type: number }
+        reservedCredits: { type: number }
+        actualCredits:
+          type: ["number", "null"]
+        message:
+          type: ["string", "null"]
+    ReviewInput:
+      type: object
+      required: [decision]
+      properties:
+        decision:
+          type: string
+          enum: [approve, request_changes]
+        comment:
+          type: ["string", "null"]
+    PublishResult:
+      type: object
+      required: [articleId, status, provider, url]
+      properties:
+        articleId: { type: string }
+        status:
+          type: string
+          enum: [published, unavailable]
+        provider: { type: string }
+        url:
+          type: ["string", "null"]
+        message: { type: string }
+    Activity:
+      type: object
+      required: [id, actor, action, target, timestamp]
+      properties:
+        id: { type: string }
+        actor: { type: string }
+        action: { type: string }
+        target: { type: string }
+        timestamp: { type: string }
+    CreditSummary:
+      type: object
+      required: [balance, reserved, usedThisMonth, currency, charges]
+      properties:
+        balance: { type: number }
+        reserved: { type: number }
+        usedThisMonth: { type: number }
+        currency: { type: string }
+        charges:
+          type: array
+          items:
+            $ref: "#/components/schemas/Charge"
+    Charge:
+      type: object
+      required: [id, label, credits, status, createdAt]
+      properties:
+        id: { type: string }
+        label: { type: string }
+        credits: { type: number }
+        status:
+          type: string
+          enum: [reserved, charged, refunded]
+        createdAt: { type: string }
+    Dashboard:
+      type: object
+      required: [workspace, projects, articles, generation, credits, activity]
+      properties:
+        workspace:
+          $ref: "#/components/schemas/Workspace"
+        projects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project"
+        articles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArticleSummary"
+        generation:
+          type: ["object", "null"]
+          properties:
+            run:
+              $ref: "#/components/schemas/GenerationRun"
+        credits:
+          $ref: "#/components/schemas/CreditSummary"
+        activity:
+          type: array
+          items:
+            $ref: "#/components/schemas/Activity"
 
