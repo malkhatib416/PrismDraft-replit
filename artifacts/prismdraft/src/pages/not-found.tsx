@@ -1,7 +1,23 @@
+import { useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertCircle } from 'lucide-react';
+import { applyPageMetadata, siteUrl } from '@/lib/seo';
 
 export default function NotFound() {
+  useEffect(() => {
+    applyPageMetadata({
+      title: 'Page not found — PrismDraft',
+      description: 'The PrismDraft page you requested could not be found.',
+      path: '/404',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Page not found',
+        url: siteUrl('/404'),
+      },
+    });
+  }, []);
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
       <Card className="w-full max-w-md mx-4">

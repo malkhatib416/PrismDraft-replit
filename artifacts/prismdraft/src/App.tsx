@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import Home from '@/pages/home';
+import ArticlePage, { getArticle } from '@/pages/article-page';
 import {
   Route,
   Switch,
@@ -21,6 +22,18 @@ function Router() {
     <RoutedErrorBoundary>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/how-it-works">
+          <ArticlePage article={getArticle("/how-it-works")!} />
+        </Route>
+        <Route path="/seo-content-workflow">
+          <ArticlePage article={getArticle("/seo-content-workflow")!} />
+        </Route>
+        <Route path="/content-brief-template">
+          <ArticlePage article={getArticle("/content-brief-template")!} />
+        </Route>
+        <Route path="/editorial-review">
+          <ArticlePage article={getArticle("/editorial-review")!} />
+        </Route>
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>

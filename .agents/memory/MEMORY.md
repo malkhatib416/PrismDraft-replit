@@ -1,0 +1,1 @@
+- [Vite canonical metadata](seo-spa-metadata.md) — use a concrete canonical URL in the HTML shell; a root-only href can be treated as a directory asset during Vite builds.

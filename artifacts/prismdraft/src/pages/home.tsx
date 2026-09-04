@@ -1,60 +1,7 @@
-import { useState } from "react";
-import { ArrowDownRight, ArrowUpRight, Check, Menu, X } from "lucide-react";
-
-function Brand() {
-  return (
-    <a className="pd-logo" href="#top" data-testid="link-logo">
-      <span className="pd-logo-mark" aria-hidden="true" />
-      <span>PrismDraft</span>
-    </a>
-  );
-}
-
-function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const closeMenu = () => setMenuOpen(false);
-
-  return (
-    <header className="pd-container pd-nav">
-      <Brand />
-      <nav
-        className={`pd-nav-links ${menuOpen ? "is-open" : ""}`}
-        aria-label="Primary navigation"
-      >
-        <a href="#method" onClick={closeMenu} data-testid="link-method">
-          Method
-        </a>
-        <a href="#workspace" onClick={closeMenu} data-testid="link-workspace">
-          Workspace
-        </a>
-        <a href="#principles" onClick={closeMenu} data-testid="link-principles">
-          Principles
-        </a>
-        <a
-          className="pd-button pd-button--quiet"
-          href="#contact"
-          onClick={closeMenu}
-          data-testid="link-nav-contact"
-        >
-          Talk to the desk <ArrowUpRight size={14} strokeWidth={1.8} />
-        </a>
-      </nav>
-      <a className="pd-button" href="#contact" data-testid="link-nav-cta">
-        See PrismDraft <ArrowUpRight size={14} strokeWidth={1.8} />
-      </a>
-      <button
-        className="pd-menu-button"
-        type="button"
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
-        aria-expanded={menuOpen}
-        onClick={() => setMenuOpen((open) => !open)}
-        data-testid="button-mobile-menu"
-      >
-        {menuOpen ? <X size={22} /> : <Menu size={22} />}
-      </button>
-    </header>
-  );
-}
+import { useEffect } from "react";
+import { ArrowDownRight, ArrowUpRight, Check } from "lucide-react";
+import { ContactCta, Footer, Header } from "@/components/site-shell";
+import { applyPageMetadata, homeMetadata, sitePath } from "@/lib/seo";
 
 function HeroArtwork() {
   return (
@@ -196,6 +143,9 @@ function PlanningFeature() {
             <li>Section-level guidance that gives the writer somewhere to go.</li>
             <li>A working plan you can challenge before the first line is written.</li>
           </ul>
+          <a className="pd-inline-link" href={sitePath("/content-brief-template")}>
+            Start with the content brief template <ArrowUpRight size={14} strokeWidth={1.8} />
+          </a>
         </div>
         <div className="pd-planning-board" aria-label="Sample PrismDraft editorial brief" data-testid="art-editorial-brief">
           <div className="pd-board-header">
@@ -293,7 +243,7 @@ function ApprovalFeature() {
             Your team owns the last mile. Review what changed, make the call, and
             keep a record of the moment a draft became publishable.
           </p>
-          <a className="pd-button pd-button--quiet" href="#contact" data-testid="link-approval-details">
+          <a className="pd-button pd-button--quiet" href={sitePath("/editorial-review")} data-testid="link-approval-details">
             See the review path <ArrowUpRight size={14} strokeWidth={1.8} />
           </a>
         </div>
@@ -360,50 +310,14 @@ function Quote() {
   );
 }
 
-function ContactCta() {
-  return (
-    <section className="pd-cta" id="contact">
-      <div className="pd-container">
-        <div className="pd-eyebrow">A quieter way to ship</div>
-        <h2>
-          Bring the next good idea to the desk.
-        </h2>
-        <p>
-          PrismDraft is for teams with a point of view, a publishing calendar,
-          and no interest in trading quality for speed.
-        </p>
-        <div className="pd-cta-actions">
-          <a className="pd-button pd-button--coral" href="#top" data-testid="link-cta-start">
-            Back to the beginning <ArrowUpRight size={14} strokeWidth={1.8} />
-          </a>
-          <a className="pd-button pd-button--quiet" href="mailto:hello@prismdraft.co" data-testid="link-cta-email">
-            hello@prismdraft.co
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="pd-footer">
-      <div className="pd-container pd-footer-inner">
-        <Brand />
-        <small>© 2025 PrismDraft / Made for the careful publish</small>
-        <div className="pd-footer-links">
-          <a href="#method" data-testid="link-footer-method">Method</a>
-          <a href="#contact" data-testid="link-footer-contact">Contact</a>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 export default function Home() {
+  useEffect(() => {
+    applyPageMetadata(homeMetadata());
+  }, []);
+
   return (
     <main className="pd-page">
-      <Header />
+      <Header homeAnchors />
       <Hero />
       <Method />
       <PlanningFeature />
@@ -411,8 +325,8 @@ export default function Home() {
       <ApprovalFeature />
       <CreditsFeature />
       <Quote />
-      <ContactCta />
-      <Footer />
+      <ContactCta homeAnchors />
+      <Footer homeAnchors />
     </main>
   );
 }
